@@ -1,18 +1,32 @@
-const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
+const net = require('net');
+//define host and port to run the server
+const port = 60000;
+const host = '0.0.0.0';
 
-server.on('error', (err) => {
-  console.log(`server error:\n${err.stack}`);
-  server.close();
+//Create an instance of the server
+const server = net.createServer(onClientConnection);
+//Start listening with the server on given port and host.
+server.listen(port,host,function(){
+   console.log(`Server started on port ${port} at ${host}`); 
 });
 
-server.on('message', (msg, rinfo) => {
-  console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
-});
-
-server.on('listening', () => {
-  const address = server.address();
-  console.log(`server listening ${address.address}:${address.port}`);
-});
-
-server.bind(60000);
+//Declare connection listener function
+function onClientConnection(sock){
+    //Log when a client connnects.
+    console.log(`${sock.remoteAddress}:${sock.remotePort} Connected`);
+     //Listen for data from the connected client.
+    sock.on('data',function(data){
+        //Log data from the client
+        console.log(`${sock.remoteAddress}:${sock.remotePort} Says : ${data} `);
+        //Send back the data to the client.
+        sock.write(`You Said ${data}`);
+    });
+    //Handle client connection termination.
+    sock.on('close',function(){
+        console.log(`${sock.remoteAddress}:${sock.remotePort} Terminated the connection`);
+    });
+    //Handle Client connection error.
+    sock.on('error',function(error){
+        console.error(`${sock.remoteAddress}:${sock.remotePort} Connection Error ${error}`);
+    });
+};
