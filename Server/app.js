@@ -18,8 +18,6 @@ function onClientConnection(sock){
     sock.on('data',function(data){
         //Log data from the client
         console.log(`${sock.remoteAddress}:${sock.remotePort} Says : ${data} `);
-        //Send back the data to the client.
-        sock.write(`You Said ${data}`);
     });
     //Handle client connection termination.
     sock.on('close',function(){
