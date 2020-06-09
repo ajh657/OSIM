@@ -1,0 +1,9 @@
+Message Send Packet
+0 1-9 10 11-19 20 21-1021
+
+0	PacketType / Sender ID Next8Bytes Are ID
+1-9	Sender ID Bytes
+10	Reciever ID Next8Bytes Are ID
+11-19	Reciever ID Bytes
+20	Message till end
+21-1021	Message
