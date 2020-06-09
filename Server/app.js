@@ -17,6 +17,7 @@ function onClientConnection(sock){
      //Listen for data from the connected client.
     sock.on('data',function(data){
         //Log data from the client
+        console.log(data.toString());
         console.log(`${sock.remoteAddress}:${sock.remotePort} Says : ${data.toString()} `);
     });
     //Handle client connection termination.
